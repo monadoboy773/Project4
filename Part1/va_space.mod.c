@@ -20,12 +20,11 @@ __attribute__((section("__versions"))) = {
 	{ 0x28950ef1, __VMLINUX_SYMBOL_STR(module_layout) },
 	{ 0x15692c87, __VMLINUX_SYMBOL_STR(param_ops_int) },
 	{ 0x5b8239ca, __VMLINUX_SYMBOL_STR(__x86_return_thunk) },
-	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
 	{ 0xf5893abf, __VMLINUX_SYMBOL_STR(up_read) },
 	{ 0x57a6ccd0, __VMLINUX_SYMBOL_STR(down_read) },
 	{ 0xa25e8997, __VMLINUX_SYMBOL_STR(pid_task) },
 	{ 0x49a6b139, __VMLINUX_SYMBOL_STR(find_vpid) },
-	{ 0xbdfb6dbb, __VMLINUX_SYMBOL_STR(__fentry__) },
+	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
 };
 
 static const char __module_depends[]
@@ -34,7 +33,7 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "234D3A874997FF37BD6127C");
+MODULE_INFO(srcversion, "BD6BF9481AFB1FA6EFA963E");
 MODULE_INFO(rhelversion, "7.9");
 #ifdef RETPOLINE
 	MODULE_INFO(retpoline, "Y");

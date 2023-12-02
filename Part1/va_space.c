@@ -1,6 +1,7 @@
 //#include <stdio.h>
 #include <linux/kernel.h>
 #include <linux/sched.h>
+#include <linux/init.h>
 #include <linux/mm.h>
 #include <linux/mm_types.h>
 #include <linux/unistd.h>
@@ -40,12 +41,14 @@ module_param(pid, int, 0);
 //     return 0;
 // }
 
-void va_space(void)
+static int __init va_space(void)
 {
     struct mm_struct *adr_space;
     struct task_struct *task;
     struct vm_area_struct *vm_area;
     unsigned long size = 0;
+
+    printk(KERN_INFO "Loading module...\n");
     
     // Get the task struct for the PID entered
     task = pid_task(find_vpid(pid), PIDTYPE_PID);
@@ -68,14 +71,17 @@ void va_space(void)
 
     printk(KERN_INFO "Size of virtual address space for"
         " process(PID: %d): %lu bytes(?)", pid, size);
+    
+    return 0;
 
 }
 
 static void __exit clean_exit(void)
 {
-    printk(KERN_INFO "exiting. Goodbye!\n");
-    return 0;
+    printk(KERN_INFO "Exiting. Goodbye!\n"); 
 }
 
 module_init(va_space);
-module_exit(clean_exit)
+module_exit(clean_exit);
+
+MODULE_LICENSE("GPL");
