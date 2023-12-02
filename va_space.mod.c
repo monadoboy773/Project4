@@ -7,6 +7,7 @@ MODULE_INFO(vermagic, VERMAGIC_STRING);
 struct module __this_module
 __attribute__((section(".gnu.linkonce.this_module"))) = {
 	.name = KBUILD_MODNAME,
+	.init = init_module,
 	.arch = MODULE_ARCH_INIT,
 };
 
@@ -30,7 +31,7 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "3466E479D7FEE68F7AF73AB");
+MODULE_INFO(srcversion, "155E61546F5BCACF0DEFD87");
 MODULE_INFO(rhelversion, "7.9");
 #ifdef RETPOLINE
 	MODULE_INFO(retpoline, "Y");

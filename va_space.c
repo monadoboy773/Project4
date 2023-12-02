@@ -1,35 +1,46 @@
 //#include <stdio.h>
-#include <unistd.h>
 #include <linux/kernel.h>
 #include <linux/sched.h>
 #include <linux/mm.h>
 #include <linux/mm_types.h>
 #include <linux/unistd.h>
 #include <linux/time.h>
+#include <linux/module.h>
 
-void va_space(__pid_t);
+//void va_space(pid_t);
 
-int main(int argc, char* argv[])
-{
-    // __pid_t pid;
-    // printk("Please enter a process ID");
-    // scanf("%d", &pid);
-    // va_space(pid);
+static int pid = 1866;
+module_param(pid, int, 0);
 
-    if(argc > 1){
-        va_space(argc);
-    }
-    else
-    {
-        pr_err("ERROR: please provide a PID\n");
-        panic("Terminating...\n");
-    }
+MODULE_PARAM_DESC(PID, "Process ID for the module.");
+
+// static int __init module_init(void)
+// {
+//     printk(KERN_INFO "initializing...\n");
+//     return 0;
+// }
+
+// int va_space(void)
+// {
+//     // __pid_t pid;
+//     // printk(KERN_INFO(KERN_INFO("Please enter a process ID");
+//     // scanf("%d", &pid);
+//     // va_space(pid);
+
+//     if(argc > 1){
+//         va_space(argc);
+//     }
+//     else
+//     {
+//         pr_err("ERROR: please provide a PID\n");
+//         panic("Terminating...\n");
+//     }
 
     
-    return 0;
-}
+//     return 0;
+// }
 
-void va_space(__pid_t pid)
+int va_space(void)
 {
     struct mm_struct *adr_space;
     struct task_struct *task;
@@ -37,15 +48,15 @@ void va_space(__pid_t pid)
     unsigned long size = 0;
     
     // Get the task struct for the PID entered
-    task = pid_task(find_get_pid(pid), PIDTYPE_PID);
+    task = pid_task(find_vpid(pid), PIDTYPE_PID);
     if(task == NULL){
-        printk("No process with PID %d found\n", pid);
+        printk(KERN_INFO "No process with PID %d found\n", pid);
     }
 
     // Get memory descriptor of the given process
     adr_space = task->mm;
     if(adr_space == NULL){
-        printk("No memory descriptor found.");
+        printk(KERN_INFO"No memory descriptor found.");
     }
 
     // Go through the vma's to calculate size of virtual addressss space
@@ -55,8 +66,16 @@ void va_space(__pid_t pid)
     }
     up_read(&adr_space->mmap_sem);
 
-    printk("Size of virtual address space for"
+    printk(KERN_INFO "Size of virtual address space for"
         " process(PID: %d): %lu bytes(?)", pid, size);
 
 }
 
+static void __exit clean_exit(void)
+{
+    printk(KERN_INFO "exiting. Goodbye!\n");
+    return 0;
+}
+
+module_init(va_space);
+module_exit(clean_exit)
