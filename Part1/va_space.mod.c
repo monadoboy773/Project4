@@ -33,7 +33,7 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "BD6BF9481AFB1FA6EFA963E");
+MODULE_INFO(srcversion, "C22B9A1DB8CDC6937D31190");
 MODULE_INFO(rhelversion, "7.9");
 #ifdef RETPOLINE
 	MODULE_INFO(retpoline, "Y");
