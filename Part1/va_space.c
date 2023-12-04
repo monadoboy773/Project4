@@ -7,10 +7,10 @@
 #include <linux/time.h>
 #include <linux/module.h>
 
+
 // Initializes pid;
 static int pid = 0;
 module_param(pid, int, 0);
-
 
 static int __init va_space(void)
 {
@@ -25,6 +25,7 @@ static int __init va_space(void)
 
 
     // Get the task struct for the PID entered
+    // Returns error if PID not found
     task = pid_task(find_vpid(pid), PIDTYPE_PID);
     if(task == NULL){
         printk(KERN_INFO "No process with PID %d found\n", pid);
@@ -33,6 +34,7 @@ static int __init va_space(void)
 
 
     // Get memory descriptor of the given process
+    // Returns error if unsuccessful
     adr_space = task->mm;
     if(adr_space == NULL){
         printk(KERN_INFO"No memory descriptor found.\n");
@@ -40,7 +42,7 @@ static int __init va_space(void)
     }
 
 
-    // Go through the vma's to calculate size of virtual addressss space
+    // Go through the vma's to calculate size of virtual address space
     // Converts bytes to KB
     down_read(&adr_space->mmap_sem);
     for(vm_area = adr_space->mmap; vm_area; vm_area = vm_area->vm_next) {
